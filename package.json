@@ -1,0 +1,10 @@
+{
+  "name": "sequelize-typescript",
+  "version": "1.0.0",
+  "description": "Sequelize with typescript - Small project demonstration",
+  "main": "src/server.ts",
+  "repository": "https://github.com/howmarketing/sequelize-typescript.git",
+  "author": "howmarketing",
+  "license": "MIT",
+  "private": false
+}

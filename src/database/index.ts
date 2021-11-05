@@ -7,7 +7,7 @@ import { databaseConfig } from "@config/database";
 // const UsersPhoneNumbers = require('./../models/UsersPhoneNumbers');
 // const Tech = require('./../models/Tech');
 
-const connection = new Sequelize(databaseConfig);
+export const connection = new Sequelize(databaseConfig);
 
 // User.init(connection);
 // UsersPhoneNumbers.init(connection);

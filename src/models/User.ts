@@ -1,6 +1,5 @@
 import {
   Model,
-  ModelDefined,
   DataTypes,
   HasManyGetAssociationsMixin,
   HasManyAddAssociationMixin,
@@ -10,31 +9,11 @@ import {
   HasManyCreateAssociationMixin,
   Optional,
 } from "sequelize";
+
 import { connection as sequelize } from "@database/index";
-interface ProjectAttributes {
-  id: number;
-  ownerId: number;
-  name: string;
-}
-
-interface ProjectCreationAttributes extends Optional<ProjectAttributes, "id"> {}
-
-class Project
-  extends Model<ProjectAttributes, ProjectCreationAttributes>
-  implements ProjectAttributes
-{
-  public id!: number;
-  public ownerId!: number;
-  public name!: string;
-
-  public readonly createdAt!: Date;
-  public readonly updatedAt!: Date;
-}
-
-interface AddressAttributes {
-  userId: number;
-  address: string;
-}
+import { Project } from "@models/Project";
+import { Tech } from "@models/Tech";
+import { Address } from "@models/Address";
 
 // These are all the attributes in the User model
 interface UserAttributes {
@@ -46,7 +25,7 @@ interface UserAttributes {
 // Some attributes are optional in `User.build` and `User.create` calls
 interface UserCreationAttributes extends Optional<UserAttributes, "id"> {}
 
-class User
+export class User
   extends Model<UserAttributes, UserCreationAttributes>
   implements UserAttributes
 {
@@ -76,49 +55,6 @@ class User
   };
 }
 
-// You can write `extends Model<AddressAttributes, AddressAttributes>` instead,
-// but that will do the exact same thing as below
-class Address extends Model<AddressAttributes> implements AddressAttributes {
-  public userId!: number;
-  public address!: string;
-
-  public readonly createdAt!: Date;
-  public readonly updatedAt!: Date;
-}
-
-// You can also define modules in a functional way
-interface NoteAttributes {
-  id: number;
-  title: string;
-  content: string;
-}
-
-// You can also set multiple attributes optional at once
-interface NoteCreationAttributes
-  extends Optional<NoteAttributes, "id" | "title"> {}
-
-Project.init(
-  {
-    id: {
-      type: DataTypes.INTEGER.UNSIGNED,
-      autoIncrement: true,
-      primaryKey: true,
-    },
-    ownerId: {
-      type: DataTypes.INTEGER.UNSIGNED,
-      allowNull: false,
-    },
-    name: {
-      type: new DataTypes.STRING(128),
-      allowNull: false,
-    },
-  },
-  {
-    sequelize,
-    tableName: "projects",
-  }
-);
-
 User.init(
   {
     id: {
@@ -136,60 +72,25 @@ User.init(
     },
   },
   {
+    sequelize,
+    modelName: "user",
     tableName: "users",
-    sequelize, // passing the `sequelize` instance is required
+    underscored: true,
+    charset: "utf8mb4",
+    engine: "InnoDB",
+    collate: "utf8mb4_unicode_ci",
   }
 );
-
-Address.init(
-  {
-    userId: {
-      type: DataTypes.INTEGER.UNSIGNED,
-    },
-    address: {
-      type: new DataTypes.STRING(128),
-      allowNull: false,
-    },
-  },
-  {
-    tableName: "address",
-    sequelize, // passing the `sequelize` instance is required
-  }
-);
-
-// And with a functional approach defining a module looks like this
-export const Note: ModelDefined<NoteAttributes, NoteCreationAttributes> =
-  sequelize.define(
-    "Note",
-    {
-      id: {
-        type: DataTypes.INTEGER.UNSIGNED,
-        autoIncrement: true,
-        primaryKey: true,
-      },
-      title: {
-        type: new DataTypes.STRING(64),
-        defaultValue: "Unnamed Note",
-      },
-      content: {
-        type: new DataTypes.STRING(4096),
-        allowNull: false,
-      },
-    },
-    {
-      tableName: "notes",
-    }
-  );
 
 // Here we associate which actually populates out pre-declared `association` static and other methods.
-User.hasMany(Project, {
-  sourceKey: "id",
-  foreignKey: "ownerId",
-  as: "projects", // this determines the name in `associations`!
+User.belongsToMany(Tech, {
+  foreignKey: "user_id",
+  through: "users_techs",
+  as: "techs",
 });
+User.hasMany(Project, { foreignKey: "user_id", as: "project" });
 
-Address.belongsTo(User, { targetKey: "id" });
-User.hasOne(Address, { sourceKey: "id" });
+User.hasMany(Address, { foreignKey: "user_id", as: "addresses" });
 
 export const doStuffWithUser = async (): Promise<User> => {
   const newUser = await User.create({
@@ -198,7 +99,7 @@ export const doStuffWithUser = async (): Promise<User> => {
   });
   console.log(newUser.id, newUser.name, newUser.preferredName);
 
-  const project = await newUser.createProject({
+  await newUser.createProject({
     name: "first!",
   });
 

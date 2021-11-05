@@ -1,7 +1,7 @@
 "use strict";
 module.export = {
   dialect: "mysql", // | 'mariadb' | 'postgres' | 'mssql'
-  Dialect: "mysql", // | 'mariadb' | 'postgres' | 'mssql'
+  // Dialect: "mysql", // | 'mariadb' | 'postgres' | 'mssql'
   host: "localhost",
   username: "root",
   database: "sequelize_typescript",

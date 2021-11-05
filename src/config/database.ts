@@ -10,9 +10,9 @@ const dialectName = "mysql" as
 export const databaseConfig: SequelizeOptions = {
   dialect: dialectName,
   host: "localhost",
-  username: "docker",
-  database: "docker_sequelize_typescript_sample",
-  password: "docker_pass",
+  username: "root",
+  database: "sequelize_typescript",
+  password: "",
   port: 3306,
   define: {
     timestamps: true,

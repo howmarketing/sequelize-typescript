@@ -1,6 +1,6 @@
 const path = require('path');
 module.exports = {
-    config:path.resolve(__dirname,'src', 'config', 'sequelize-cli-config.json'),
+    config:path.resolve(__dirname,'src', 'config', 'sequelize-cli-config.js'),
     //yarn sequelize migration:create --name=label-your-use
     'migrations-path':path.resolve(__dirname, 'src', 'database', 'migrations'),
     'migrations-source-path':path.resolve(__dirname, 'src', 'database', 'migrations'),

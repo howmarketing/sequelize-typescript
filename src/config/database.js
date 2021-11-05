@@ -4,7 +4,7 @@ module.export = {
   Dialect: "mysql", // | 'mariadb' | 'postgres' | 'mssql'
   host: "localhost",
   username: "root",
-  database: "docker_sequelize_typescript_sample",
+  database: "sequelize_typescript",
   password: "",
   port: 3306,
   define: {

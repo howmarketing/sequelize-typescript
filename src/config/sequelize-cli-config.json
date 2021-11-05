@@ -2,22 +2,22 @@
   "development": {
     "username": "root",
     "password": null,
-    "database": "sequelize_typescript_1",
-    "host": "127.0.0.1",
+    "database": "docker_sequelize_typescript_sample",
+    "host": "localhost",
     "dialect": "mysql"
   },
   "test": {
     "username": "root",
     "password": null,
-    "database": "sequelize_typescript_1",
-    "host": "127.0.0.1",
+    "database": "docker_sequelize_typescript_sample",
+    "host": "localhost",
     "dialect": "mysql"
   },
   "production": {
     "username": "root",
     "password": null,
-    "database": "sequelize_typescript_1",
-    "host": "127.0.0.1",
+    "database": "docker_sequelize_typescript_sample",
+    "host": "localhost",
     "dialect": "mysql"
   }
 }

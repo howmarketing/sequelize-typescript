@@ -1,11 +1,11 @@
-'use strict';
-import { Sequelize }  from 'sequelize-typescript';
+"use strict";
+import { Sequelize } from "sequelize-typescript";
 
-import {databaseConfig} from '@config/database';
+import { databaseConfig } from "@config/database";
 
-//const User = require('./../models/User');
-//const UsersPhoneNumbers = require('./../models/UsersPhoneNumbers');
-//const Tech = require('./../models/Tech');
+// const User = require('./../models/User');
+// const UsersPhoneNumbers = require('./../models/UsersPhoneNumbers');
+// const Tech = require('./../models/Tech');
 
 const connection = new Sequelize(databaseConfig);
 

@@ -4,7 +4,9 @@ import { connection as sequelize } from "@database/index";
 import { User } from "@models/User";
 interface TechAttributes {
   id: number;
-  title: string;
+  name: string;
+  createdAt: Date;
+  updatedAt: Date;
 }
 
 interface TechCreationAttributes extends Optional<TechAttributes, "id"> {}
@@ -14,10 +16,10 @@ export class Tech
   implements TechAttributes
 {
   public id!: number;
-  public title!: string;
+  public name!: string;
 
-  public readonly createdAt!: Date;
-  public readonly updatedAt!: Date;
+  public createdAt!: Date;
+  public updatedAt!: Date;
 }
 
 Tech.init(
@@ -27,14 +29,26 @@ Tech.init(
       autoIncrement: true,
       primaryKey: true,
     },
-    title: {
-      type: new DataTypes.STRING(128),
+    name: {
+      type: DataTypes.STRING(128),
       allowNull: false,
+    },
+    createdAt: {
+      type: DataTypes.DATE,
+      field: "created_at",
+    },
+    updatedAt: {
+      type: DataTypes.DATE,
+      field: "updated_at",
     },
   },
   {
     sequelize,
     tableName: "techs",
+    modelName: "tech",
+    charset: "utf8mb4",
+    collate: "utf8mb4_unicode_ci",
+    engine: "InnoDB",
   }
 );
 

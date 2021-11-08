@@ -1,4 +1,10 @@
-import { Model, DataTypes, Optional } from "sequelize";
+import {
+  Model,
+  DataTypes,
+  Optional,
+  BelongsToGetAssociationMixin,
+  BelongsToCreateAssociationMixin,
+} from "sequelize";
 
 import { connection as sequelize } from "@database/index";
 import { User } from "@models/User";
@@ -20,17 +26,20 @@ export class Project
 
   public readonly createdAt!: Date;
   public readonly updatedAt!: Date;
+
+  public getUser!: BelongsToGetAssociationMixin<User>;
+  public addUserAssociate!: BelongsToCreateAssociationMixin<User>;
 }
 
 Project.init(
   {
     id: {
-      type: DataTypes.INTEGER.UNSIGNED,
+      type: DataTypes.INTEGER,
       autoIncrement: true,
       primaryKey: true,
     },
     userId: {
-      type: DataTypes.INTEGER.UNSIGNED,
+      type: DataTypes.INTEGER,
       allowNull: false,
       field: "user_id",
     },

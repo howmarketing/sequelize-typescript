@@ -1,37 +1,35 @@
 "use strict";
 const { Sequelize } = require("sequelize");
-
 module.exports = {
   /**
    *
    * @param {import('sequelize').QueryInterface} queryInterface
    * @param {import('sequelize').DataTypes} SequelizeDataTypes
+   * @returns {Promise<void>}
    */
   up: async (queryInterface, SequelizeDataTypes) => {
     return await queryInterface.createTable(
-      "users_techs",
+      "projects",
       {
         id: {
           type: SequelizeDataTypes.INTEGER,
           primaryKey: true,
-          autoIncrement: true,
           allowNull: false,
+          autoIncrement: true,
         },
         userId: {
           type: SequelizeDataTypes.INTEGER,
           allowNull: false,
           references: { model: "users", key: "id" },
-          onUpdate: "CASCADE",
-          onDelete: "CASCADE",
           field: "user_id",
-        },
-        techId: {
-          type: SequelizeDataTypes.INTEGER,
-          allowNull: false,
-          references: { model: "techs", key: "id" },
           onUpdate: "CASCADE",
           onDelete: "CASCADE",
-          field: "tech_id",
+        },
+        projectName: {
+          type: SequelizeDataTypes.STRING({ length: 96 }),
+          allowNull: false,
+          defaultValue: "Project name",
+          field: "name",
         },
         createdAt: {
           type: SequelizeDataTypes.DATE,
@@ -48,7 +46,7 @@ module.exports = {
         },
       },
       {
-        modelName: "users_techs",
+        modelName: "projects",
         underscored: true,
         charset: "utf8mb4",
         engine: "InnoDB",
@@ -61,8 +59,9 @@ module.exports = {
    *
    * @param {import('sequelize').QueryInterface} queryInterface
    * @param {import('sequelize').DataTypes} SequelizeDataTypes
+   * @returns {Promise<void>}
    */
   down: async (queryInterface, SequelizeDataTypes) => {
-    return await queryInterface.dropTable("users_techs");
+    return await queryInterface.dropTable("projects");
   },
 };

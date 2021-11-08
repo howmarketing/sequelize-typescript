@@ -9,7 +9,7 @@ module.exports = {
    */
   up: async (queryInterface, SequelizeDataTypes) => {
     return await queryInterface.createTable(
-      "users_techs",
+      "categorys_categorys",
       {
         id: {
           type: SequelizeDataTypes.INTEGER,
@@ -17,21 +17,37 @@ module.exports = {
           autoIncrement: true,
           allowNull: false,
         },
-        userId: {
+        categoryA: {
           type: SequelizeDataTypes.INTEGER,
-          allowNull: false,
-          references: { model: "users", key: "id" },
+          references: { model: "categorys", key: "id" },
           onUpdate: "CASCADE",
           onDelete: "CASCADE",
-          field: "user_id",
+          allowNull: false,
+          field: "category_id_a",
         },
-        techId: {
+        categoryB: {
           type: SequelizeDataTypes.INTEGER,
-          allowNull: false,
-          references: { model: "techs", key: "id" },
+          references: { model: "categorys", key: "id" },
           onUpdate: "CASCADE",
           onDelete: "CASCADE",
-          field: "tech_id",
+          allowNull: false,
+          field: "category_id_b",
+        },
+        bannerPresentationDesktop: {
+          type: SequelizeDataTypes.TEXT,
+          allowNull: true,
+          field: "banner_presentation_desktop",
+        },
+        bannerPresentationMobile: {
+          type: SequelizeDataTypes.TEXT,
+          allowNull: true,
+          field: "banner_presentation_mobile",
+        },
+        isEnabled: {
+          type: SequelizeDataTypes.TINYINT,
+          allowNull: false,
+          defaultValue: 1,
+          field: "is_enabled",
         },
         createdAt: {
           type: SequelizeDataTypes.DATE,
@@ -48,8 +64,7 @@ module.exports = {
         },
       },
       {
-        modelName: "users_techs",
-        underscored: true,
+        moduleName: "categorys_categorys",
         charset: "utf8mb4",
         engine: "InnoDB",
         collate: "utf8mb4_unicode_ci",
@@ -63,6 +78,6 @@ module.exports = {
    * @param {import('sequelize').DataTypes} SequelizeDataTypes
    */
   down: async (queryInterface, SequelizeDataTypes) => {
-    return await queryInterface.dropTable("users_techs");
+    return await queryInterface.dropTable("categorys_categorys");
   },
 };

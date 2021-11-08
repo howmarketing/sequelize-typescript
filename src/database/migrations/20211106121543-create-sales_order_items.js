@@ -9,7 +9,7 @@ module.exports = {
    */
   up: async (queryInterface, SequelizeDataTypes) => {
     return await queryInterface.createTable(
-      "users_techs",
+      "sales_order_items",
       {
         id: {
           type: SequelizeDataTypes.INTEGER,
@@ -18,20 +18,28 @@ module.exports = {
           allowNull: false,
         },
         userId: {
-          type: SequelizeDataTypes.INTEGER,
+          type: SequelizeDataTypes.INTEGER({ length: 11 }),
           allowNull: false,
           references: { model: "users", key: "id" },
-          onUpdate: "CASCADE",
-          onDelete: "CASCADE",
+          onUpdate: "NO ACTION",
+          onDelete: "NO ACTION",
           field: "user_id",
         },
-        techId: {
-          type: SequelizeDataTypes.INTEGER,
+        saleOrderId: {
+          type: SequelizeDataTypes.INTEGER({ length: 11 }),
           allowNull: false,
-          references: { model: "techs", key: "id" },
-          onUpdate: "CASCADE",
+          references: { model: "sales_order", key: "id" },
+          onUpdate: "NO ACTION",
+          onDelete: "NO ACTION",
+          field: "sale_order_id",
+        },
+        productId: {
+          type: SequelizeDataTypes.INTEGER({ length: 11 }),
+          allowNull: false,
+          references: { model: "products", key: "id" },
+          onUpdate: "NO ACTION",
           onDelete: "CASCADE",
-          field: "tech_id",
+          field: "product_id",
         },
         createdAt: {
           type: SequelizeDataTypes.DATE,
@@ -48,8 +56,7 @@ module.exports = {
         },
       },
       {
-        modelName: "users_techs",
-        underscored: true,
+        moduleName: "sales_order_items",
         charset: "utf8mb4",
         engine: "InnoDB",
         collate: "utf8mb4_unicode_ci",
@@ -63,6 +70,6 @@ module.exports = {
    * @param {import('sequelize').DataTypes} SequelizeDataTypes
    */
   down: async (queryInterface, SequelizeDataTypes) => {
-    return await queryInterface.dropTable("users_techs");
+    await queryInterface.dropTable("sales_order_items");
   },
 };

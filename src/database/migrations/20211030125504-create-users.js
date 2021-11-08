@@ -1,43 +1,62 @@
 "use strict";
-const { DataTypes, QueryInterface } = require("sequelize");
+const { Sequelize } = require("sequelize");
 
 module.exports = {
   /**
    *
-   * @param {QueryInterface} queryInterface
-   * @param {DataTypes} Sequelize
+   * @param {import('sequelize').QueryInterface} queryInterface
+   * @param {import('sequelize').DataTypes} SequelizeDataTypes
    */
-  up: async (queryInterface, Sequelize) => {
-    return await queryInterface.createTable("users", {
-      id: {
-        type: Sequelize.INTEGER,
-        primaryKey: true,
-        autoIncrement: true,
-        allowNull: false,
+  up: async (queryInterface, SequelizeDataTypes) => {
+    return await queryInterface.createTable(
+      "users",
+      {
+        id: {
+          type: SequelizeDataTypes.INTEGER,
+          primaryKey: true,
+          autoIncrement: true,
+          allowNull: false,
+        },
+        firstName: {
+          type: SequelizeDataTypes.STRING,
+          allowNull: false,
+          field: "first_name",
+        },
+        lastName: {
+          type: SequelizeDataTypes.STRING,
+          allowNull: false,
+          field: "last_name",
+        },
+        createdAt: {
+          type: SequelizeDataTypes.DATE,
+          allowNull: false,
+          defaultValue: Sequelize.literal("CURRENT_TIMESTAMP"),
+          field: "created_at",
+        },
+        updatedAt: {
+          type: SequelizeDataTypes.DATE,
+          allowNull: false,
+          defaultValue: Sequelize.literal("CURRENT_TIMESTAMP"),
+          onUpdate: Sequelize.literal("CURRENT_TIMESTAMP").val + "",
+          field: "updated_at",
+        },
       },
-      name: {
-        type: Sequelize.STRING,
-        allowNull: false,
-      },
-      created_at: {
-        type: Sequelize.DATE,
-        allowNull: false,
-        field: "created_at",
-      },
-      updated_at: {
-        type: Sequelize.DATE,
-        allowNull: false,
-        field: "updated_at",
-      },
-    });
+      {
+        modelName: "users",
+        underscored: true,
+        charset: "utf8mb4",
+        engine: "InnoDB",
+        collate: "utf8mb4_unicode_ci",
+      }
+    );
   },
 
   /**
    *
-   * @param {QueryInterface} queryInterface
-   * @param {DataTypes} Sequelize
+   * @param {import('sequelize').QueryInterface} queryInterface
+   * @param {import('sequelize').DataTypes} SequelizeDataTypes
    */
-  down: async (queryInterface, Sequelize) => {
+  down: async (queryInterface, SequelizeDataTypes) => {
     return await queryInterface.dropTable("users");
   },
 };

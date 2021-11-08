@@ -9,7 +9,7 @@ module.exports = {
    */
   up: async (queryInterface, SequelizeDataTypes) => {
     return await queryInterface.createTable(
-      "users_techs",
+      "users_phone_numbers",
       {
         id: {
           type: SequelizeDataTypes.INTEGER,
@@ -18,20 +18,39 @@ module.exports = {
           allowNull: false,
         },
         userId: {
-          type: SequelizeDataTypes.INTEGER,
+          type: SequelizeDataTypes.INTEGER({ length: 11 }),
           allowNull: false,
           references: { model: "users", key: "id" },
           onUpdate: "CASCADE",
           onDelete: "CASCADE",
           field: "user_id",
         },
-        techId: {
-          type: SequelizeDataTypes.INTEGER,
+        phoneCountryCode: {
+          type: SequelizeDataTypes.INTEGER({ length: 3 }),
           allowNull: false,
-          references: { model: "techs", key: "id" },
-          onUpdate: "CASCADE",
-          onDelete: "CASCADE",
-          field: "tech_id",
+          defaultValue: 55,
+          field: "phone_country_code",
+          comment: "Code to identify the phone number country prefix code.",
+        },
+        phoneStateAreaCode: {
+          type: SequelizeDataTypes.INTEGER({ length: 3 }),
+          allowNull: false,
+          defaultValue: "62",
+          field: "phone_state_area_code",
+          comment: "Code to identify the phone number state area prefix code.",
+        },
+        phoneNumber: {
+          type: SequelizeDataTypes.INTEGER({ length: 3 }),
+          allowNull: false,
+          defaultValue: 999999999,
+          field: "phone_number",
+          comment: "The phone number.",
+        },
+        phoneFormatedNumber: {
+          type: SequelizeDataTypes.STRING({ length: 23 }),
+          allowNull: false,
+          field: "phone_formated_number",
+          comment: "Phone formated with concated phone number infos",
         },
         createdAt: {
           type: SequelizeDataTypes.DATE,
@@ -48,7 +67,7 @@ module.exports = {
         },
       },
       {
-        modelName: "users_techs",
+        modelName: "users_phone_numbers",
         underscored: true,
         charset: "utf8mb4",
         engine: "InnoDB",
@@ -63,6 +82,6 @@ module.exports = {
    * @param {import('sequelize').DataTypes} SequelizeDataTypes
    */
   down: async (queryInterface, SequelizeDataTypes) => {
-    return await queryInterface.dropTable("users_techs");
+    return await queryInterface.dropTable("users_phone_numbers");
   },
 };

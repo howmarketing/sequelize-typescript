@@ -9,7 +9,7 @@ module.exports = {
    */
   up: async (queryInterface, SequelizeDataTypes) => {
     return await queryInterface.createTable(
-      "users_techs",
+      "products",
       {
         id: {
           type: SequelizeDataTypes.INTEGER,
@@ -17,21 +17,22 @@ module.exports = {
           autoIncrement: true,
           allowNull: false,
         },
-        userId: {
-          type: SequelizeDataTypes.INTEGER,
+        productTitle: {
+          type: SequelizeDataTypes.STRING({ length: 255 }),
           allowNull: false,
-          references: { model: "users", key: "id" },
-          onUpdate: "CASCADE",
-          onDelete: "CASCADE",
-          field: "user_id",
+          field: "title",
         },
-        techId: {
-          type: SequelizeDataTypes.INTEGER,
+        productDescription: {
+          type: SequelizeDataTypes.TEXT,
           allowNull: false,
-          references: { model: "techs", key: "id" },
-          onUpdate: "CASCADE",
-          onDelete: "CASCADE",
-          field: "tech_id",
+          field: "description",
+          collate: "utf8mb4_unicode_ci",
+        },
+        productPrice: {
+          type: SequelizeDataTypes.DOUBLE({ length: 11, decimals: 8 }),
+          allowNull: false,
+          defaultValue: 0.0,
+          field: "price",
         },
         createdAt: {
           type: SequelizeDataTypes.DATE,
@@ -48,8 +49,7 @@ module.exports = {
         },
       },
       {
-        modelName: "users_techs",
-        underscored: true,
+        moduleName: "products",
         charset: "utf8mb4",
         engine: "InnoDB",
         collate: "utf8mb4_unicode_ci",
@@ -63,6 +63,6 @@ module.exports = {
    * @param {import('sequelize').DataTypes} SequelizeDataTypes
    */
   down: async (queryInterface, SequelizeDataTypes) => {
-    return await queryInterface.dropTable("users_techs");
+    await queryInterface.dropTable("products");
   },
 };

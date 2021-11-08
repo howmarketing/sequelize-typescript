@@ -1,11 +1,11 @@
 "use strict";
-const { Sequelize, DataTypes, QueryInterface } = require("sequelize");
+const { Sequelize } = require("sequelize");
 
 module.exports = {
   /**
    *
-   * @param {QueryInterface} queryInterface
-   * @param {DataTypes} SequelizeDataTypes
+   * @param {import('sequelize').QueryInterface} queryInterface
+   * @param {import('sequelize').DataTypes} SequelizeDataTypes
    */
   up: async (queryInterface, SequelizeDataTypes) => {
     return await queryInterface.createTable(
@@ -32,7 +32,7 @@ module.exports = {
           type: SequelizeDataTypes.DATE,
           allowNull: false,
           defaultValue: Sequelize.literal("CURRENT_TIMESTAMP"),
-          onUpdate: Sequelize.literal("CURRENT_TIMESTAMP"),
+          onUpdate: Sequelize.literal("CURRENT_TIMESTAMP").val + "",
           field: "updated_at",
         },
       },
@@ -48,8 +48,8 @@ module.exports = {
 
   /**
    *
-   * @param {QueryInterface} queryInterface
-   * @param {DataTypes} SequelizeDataTypes
+   * @param {import('sequelize').QueryInterface} queryInterface
+   * @param {import('sequelize').DataTypes} SequelizeDataTypes
    */
   down: async (queryInterface, SequelizeDataTypes) => {
     return await queryInterface.dropTable("techs");

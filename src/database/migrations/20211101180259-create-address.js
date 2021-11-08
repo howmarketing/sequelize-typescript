@@ -1,11 +1,10 @@
 "use strict";
-// eslint-disable-next-line no-unused-vars
-const { Sequelize, DataTypes, QueryInterface } = require("sequelize");
+const { Sequelize } = require("sequelize");
 module.exports = {
   /**
    *
-   * @param {QueryInterface} queryInterface
-   * @param {DataTypes} SequelizeDataTypes
+   * @param {import('sequelize').QueryInterface} queryInterface
+   * @param {import('sequelize').DataTypes} SequelizeDataTypes
    */
   up: async (queryInterface, SequelizeDataTypes) => {
     return await queryInterface.createTable(
@@ -18,19 +17,31 @@ module.exports = {
           allowNull: false,
         },
         userId: {
-          type: SequelizeDataTypes.INTEGER({ length: 11 }).UNSIGNED,
+          type: SequelizeDataTypes.INTEGER,
           allowNull: false,
           references: { model: "users", key: "id" },
           onUpdate: "CASCADE",
           onDelete: "CASCADE",
           field: "user_id",
         },
+        city: {
+          type: SequelizeDataTypes.STRING,
+          allowNull: false,
+          field: "city",
+          comment: "City name",
+        },
+        state: {
+          type: SequelizeDataTypes.STRING,
+          allowNull: false,
+          field: "state",
+          comment: "State name",
+        },
         addressDescription: {
           type: SequelizeDataTypes.STRING(128),
           allowNull: false,
-          defaultValue: null,
           field: "description",
           comment: "Description of user address",
+          collate: "utf8mb4_unicode_ci",
         },
         addressNumber: {
           type: SequelizeDataTypes.STRING(8),
@@ -42,16 +53,20 @@ module.exports = {
         addressNeighborhood: {
           type: SequelizeDataTypes.STRING({ length: 64 }),
           allowNull: false,
-          defaultValue: null,
           field: "neighborhood",
           comment: "The user address neighborhood info.",
         },
         addressPlusInfo: {
           type: SequelizeDataTypes.STRING({ length: 128 }),
           allowNull: true,
-          defaultValue: "",
           field: "plus_info",
           comment: "The user address plus info.",
+        },
+        adressActived: {
+          type: SequelizeDataTypes.TINYINT,
+          allowNull: false,
+          defaultValue: 0,
+          field: "actived_address",
         },
         createdAt: {
           type: SequelizeDataTypes.DATE,
@@ -68,6 +83,7 @@ module.exports = {
         },
       },
       {
+        moduleName: "address",
         charset: "utf8mb4",
         engine: "InnoDB",
         collate: "utf8mb4_unicode_ci",
@@ -77,8 +93,8 @@ module.exports = {
 
   /**
    *
-   * @param {QueryInterface} queryInterface
-   * @param {DataTypes} SequelizeDataTypes
+   * @param {import('sequelize').QueryInterface} queryInterface
+   * @param {import('sequelize').DataTypes} SequelizeDataTypes
    */
   down: async (queryInterface, SequelizeDataTypes) => {
     return await queryInterface.dropTable("address");

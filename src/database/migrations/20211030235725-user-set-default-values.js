@@ -1,28 +1,40 @@
 "use strict";
-const { QueryInterface, DataTypes } = require("sequelize");
+// const { Sequelize } = require("sequelize");
 module.exports = {
   /**
    *
-   * @param {QueryInterface} queryInterface
-   * @param {DataTypes} Sequelize
+   * @param {import('sequelize').QueryInterface} queryInterface
+   * @param {import('sequelize').DataTypes} SequelizeDataTypes
    */
-  up: async (queryInterface, Sequelize) => {
-    await queryInterface.changeColumn("users", "name", {
-      type: Sequelize.STRING,
+  up: async (queryInterface, SequelizeDataTypes) => {
+    await queryInterface.changeColumn("users", "first_name", {
+      type: SequelizeDataTypes.STRING,
       defaultValue: null,
       allowNull: true,
     });
-    await queryInterface.changeColumn("users", "email", {
-      type: Sequelize.STRING,
+    await queryInterface.changeColumn("users", "last_name", {
+      type: SequelizeDataTypes.STRING,
       defaultValue: null,
+      allowNull: true,
+    });
+    return await queryInterface.changeColumn("users", "email", {
+      type: SequelizeDataTypes.STRING({ length: 128 }),
+      defaultValue: null,
+      unique: true,
       allowNull: true,
     });
   },
 
   /**
    *
-   * @param {QueryInterface} queryInterface
-   * @param {DataTypes} Sequelize
+   * @param {import('sequelize').QueryInterface} queryInterface
+   * @param {import('sequelize').DataTypes} SequelizeDataTypes
    */
-  down: async (queryInterface, Sequelize) => {},
+  down: async (queryInterface, SequelizeDataTypes) => {
+    return await new Promise((resolve, reject) => {
+      setTimeout((t) => {
+        resolve({ success: true });
+      });
+    });
+  },
 };

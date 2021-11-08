@@ -1,37 +1,37 @@
 "use strict";
-const { Sequelize } = require("sequelize");
-
+const Sequelize = require("sequelize");
 module.exports = {
   /**
    *
    * @param {import('sequelize').QueryInterface} queryInterface
    * @param {import('sequelize').DataTypes} SequelizeDataTypes
+   * @returns {Promise<void>}
    */
   up: async (queryInterface, SequelizeDataTypes) => {
     return await queryInterface.createTable(
-      "users_techs",
+      "products_categorys",
       {
         id: {
           type: SequelizeDataTypes.INTEGER,
           primaryKey: true,
+          allowNull: false,
           autoIncrement: true,
-          allowNull: false,
         },
-        userId: {
+        productId: {
           type: SequelizeDataTypes.INTEGER,
+          references: { model: "products", key: "id" },
           allowNull: false,
-          references: { model: "users", key: "id" },
+          field: "product_id",
           onUpdate: "CASCADE",
           onDelete: "CASCADE",
-          field: "user_id",
         },
-        techId: {
+        categoryId: {
           type: SequelizeDataTypes.INTEGER,
+          references: { model: "categorys", key: "id" },
           allowNull: false,
-          references: { model: "techs", key: "id" },
+          field: "category_id",
           onUpdate: "CASCADE",
           onDelete: "CASCADE",
-          field: "tech_id",
         },
         createdAt: {
           type: SequelizeDataTypes.DATE,
@@ -48,7 +48,7 @@ module.exports = {
         },
       },
       {
-        modelName: "users_techs",
+        modelName: "products_categorys",
         underscored: true,
         charset: "utf8mb4",
         engine: "InnoDB",
@@ -61,8 +61,9 @@ module.exports = {
    *
    * @param {import('sequelize').QueryInterface} queryInterface
    * @param {import('sequelize').DataTypes} SequelizeDataTypes
+   * @returns {Promise<void>}
    */
   down: async (queryInterface, SequelizeDataTypes) => {
-    return await queryInterface.dropTable("users_techs");
+    return await queryInterface.dropTable("products_categorys");
   },
 };

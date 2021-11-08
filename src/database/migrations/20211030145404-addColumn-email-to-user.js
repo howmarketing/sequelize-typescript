@@ -1,22 +1,24 @@
 "use strict";
-const { DataTypes, QueryInterface } = require("sequelize");
+// const { Sequelize } = require("sequelize");
 module.exports = {
   /**
-   * @param {QueryInterface} queryInterface
-   * @param {DataTypes} Sequelize
+   *
+   * @param {import('sequelize').QueryInterface} queryInterface
+   * @param {import('sequelize').DataTypes} SequelizeDataTypes
    */
-  up: async (queryInterface, Sequelize) => {
+  up: async (queryInterface, SequelizeDataTypes) => {
     return await queryInterface.addColumn("users", "email", {
-      type: Sequelize.STRING,
+      type: SequelizeDataTypes.STRING,
       allowNull: true,
     });
   },
 
   /**
-   * @param {QueryInterface} queryInterface
-   * @param {DataTypes} Sequelize
+   *
+   * @param {import('sequelize').QueryInterface} queryInterface
+   * @param {import('sequelize').DataTypes} SequelizeDataTypes
    */
-  down: async (queryInterface, Sequelize) => {
+  down: async (queryInterface, SequelizeDataTypes) => {
     return await queryInterface.removeColumn("users", "email");
   },
 };

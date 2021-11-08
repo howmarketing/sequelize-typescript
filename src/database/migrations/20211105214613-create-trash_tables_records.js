@@ -9,29 +9,24 @@ module.exports = {
    */
   up: async (queryInterface, SequelizeDataTypes) => {
     return await queryInterface.createTable(
-      "users_techs",
+      "trash_tables_records",
       {
         id: {
-          type: SequelizeDataTypes.INTEGER,
+          type: SequelizeDataTypes.INTEGER({ length: 11 }).UNSIGNED,
           primaryKey: true,
           autoIncrement: true,
           allowNull: false,
         },
-        userId: {
-          type: SequelizeDataTypes.INTEGER,
+        tableName: {
+          type: SequelizeDataTypes.STRING({ length: 255 }),
           allowNull: false,
-          references: { model: "users", key: "id" },
-          onUpdate: "CASCADE",
-          onDelete: "CASCADE",
-          field: "user_id",
+          field: "table_name",
+          comment: "Refer to a database table name that has the trash status",
         },
-        techId: {
-          type: SequelizeDataTypes.INTEGER,
+        tableRecordId: {
+          type: SequelizeDataTypes.INTEGER({ length: 11 }).UNSIGNED,
           allowNull: false,
-          references: { model: "techs", key: "id" },
-          onUpdate: "CASCADE",
-          onDelete: "CASCADE",
-          field: "tech_id",
+          field: "table_record_id",
         },
         createdAt: {
           type: SequelizeDataTypes.DATE,
@@ -48,11 +43,10 @@ module.exports = {
         },
       },
       {
-        modelName: "users_techs",
-        underscored: true,
-        charset: "utf8mb4",
         engine: "InnoDB",
+        charset: "utf8mb4",
         collate: "utf8mb4_unicode_ci",
+        moduleName: "trash_tables_records",
       }
     );
   },
@@ -62,7 +56,7 @@ module.exports = {
    * @param {import('sequelize').QueryInterface} queryInterface
    * @param {import('sequelize').DataTypes} SequelizeDataTypes
    */
-  down: async (queryInterface, SequelizeDataTypes) => {
-    return await queryInterface.dropTable("users_techs");
+  down: async (queryInterface, Sequelize) => {
+    return await queryInterface.dropTable("trash_tables_records");
   },
 };

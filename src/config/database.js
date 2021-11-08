@@ -1,5 +1,5 @@
 "use strict";
-module.export = {
+module.exports = {
   dialect: "mysql", // | 'mariadb' | 'postgres' | 'mssql'
   // Dialect: "mysql", // | 'mariadb' | 'postgres' | 'mssql'
   host: "localhost",

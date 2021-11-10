@@ -1,60 +1,55 @@
-import { Model, DataTypes, Optional } from "sequelize";
+import { DataTypes, Optional, ModelDefined } from "sequelize";
 
-import { connection as sequelize } from "@database/index";
+import { connection } from "@database/index";
 import { User } from "@models/User";
-interface TechAttributes {
+export interface TechAttributes {
   id: number;
   name: string;
   createdAt: Date;
   updatedAt: Date;
 }
 
-interface TechCreationAttributes extends Optional<TechAttributes, "id"> {}
+export interface TechCreationAttributes
+  extends Optional<TechAttributes, "id"> {}
 
-export class Tech
-  extends Model<TechAttributes, TechCreationAttributes>
-  implements TechAttributes
-{
-  public id!: number;
-  public name!: string;
+export const Tech: ModelDefined<TechAttributes, TechCreationAttributes> =
+  connection.define(
+    "Tech",
+    {
+      id: {
+        type: DataTypes.INTEGER.UNSIGNED,
+        autoIncrement: true,
+        primaryKey: true,
+      },
+      name: {
+        type: DataTypes.STRING(128),
+        allowNull: false,
+      },
+      createdAt: {
+        type: DataTypes.DATE,
+        field: "created_at",
+      },
+      updatedAt: {
+        type: DataTypes.DATE,
+        field: "updated_at",
+      },
+    },
+    {
+      name: { singular: "Tech", plural: "Techs" },
+      tableName: "techs",
+      modelName: "Tech",
+      charset: "utf8mb4",
+      collate: "utf8mb4_unicode_ci",
+      engine: "InnoDB",
+    }
+  );
 
-  public createdAt!: Date;
-  public updatedAt!: Date;
-}
-
-Tech.init(
-  {
-    id: {
-      type: DataTypes.INTEGER.UNSIGNED,
-      autoIncrement: true,
-      primaryKey: true,
-    },
-    name: {
-      type: DataTypes.STRING(128),
-      allowNull: false,
-    },
-    createdAt: {
-      type: DataTypes.DATE,
-      field: "created_at",
-    },
-    updatedAt: {
-      type: DataTypes.DATE,
-      field: "updated_at",
-    },
-  },
-  {
-    sequelize,
-    tableName: "techs",
-    modelName: "tech",
-    charset: "utf8mb4",
-    collate: "utf8mb4_unicode_ci",
-    engine: "InnoDB",
-  }
-);
-
-// Here we associate which actually populates out pre-declared `association` static and other methods.
-Tech.belongsToMany(User, {
-  foreignKey: "tech_id",
-  through: "users_techs",
-  as: "users",
-});
+(async () => {
+  await connection.sync({ force: false, alter: false });
+  // Here we associate which actually populates out pre-declared `association` static and other methods.
+  Tech.belongsToMany(User, {
+    foreignKey: "tech_id",
+    through: "users_techs",
+    as: "Users",
+  });
+})();

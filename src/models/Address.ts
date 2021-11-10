@@ -1,6 +1,6 @@
-import { Model, DataTypes, Optional } from "sequelize";
+import { DataTypes, Optional, ModelDefined } from "sequelize";
 
-import { connection as sequelize } from "@database/index";
+import { connection } from "@database/index";
 import { User } from "@models/User";
 interface AddressAttributes {
   id: number;
@@ -10,19 +10,11 @@ interface AddressAttributes {
 
 interface AddressCreationAttributes extends Optional<AddressAttributes, "id"> {}
 
-export class Address
-  extends Model<AddressAttributes, AddressCreationAttributes>
-  implements AddressAttributes
-{
-  public id!: number;
-  public userId!: number;
-  public name!: string;
-
-  public readonly createdAt!: Date;
-  public readonly updatedAt!: Date;
-}
-
-Address.init(
+export const Address: ModelDefined<
+  AddressAttributes,
+  AddressCreationAttributes
+> = connection.define(
+  "Address",
   {
     id: {
       type: DataTypes.INTEGER.UNSIGNED,
@@ -40,9 +32,9 @@ Address.init(
     },
   },
   {
-    sequelize,
-    modelName: "address",
-    tableName: "addresss",
+    name: { singular: "Address", plural: "Addresses" },
+    modelName: "Address",
+    tableName: "address",
     underscored: true,
     charset: "utf8mb4",
     engine: "InnoDB",
@@ -51,4 +43,7 @@ Address.init(
 );
 
 // Here we associate which actually populates out pre-declared `association` static and other methods.
-Address.belongsTo(User, { foreignKey: "user_id", as: "user" });
+(async () => {
+  await connection.sync({ force: false, alter: false });
+  Address.belongsTo(User, { foreignKey: "user_id", as: "User" });
+})();

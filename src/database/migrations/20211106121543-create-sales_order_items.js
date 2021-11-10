@@ -38,8 +38,32 @@ module.exports = {
           allowNull: false,
           references: { model: "products", key: "id" },
           onUpdate: "NO ACTION",
-          onDelete: "CASCADE",
+          onDelete: "NO ACTION",
           field: "product_id",
+        },
+        productTitleAtTime:{
+          type:SequelizeDataTypes.STRING,
+          allowNull:true,
+          defaultValue:"Product title was not setted.",
+          field:"product_title_at_time"
+        },
+        productPriceAtTime:{
+          type:SequelizeDataTypes.DOUBLE({length:11,decimals:8}),
+          allowNull:true,
+          defaultValue:0.000,
+          field:"product_price_at_time"
+        },
+        productDiscountValueAppliedAtTime:{
+          type:SequelizeDataTypes.DOUBLE({length:11,decimals:8}),
+          allowNull:true,
+          defaultValue:0.000,
+          field:"product_discount_value_applied_at_time"
+        },
+        productDiscountLabelAtTime:{
+          type:SequelizeDataTypes.STRING,
+          allowNull:true,
+          defaultValue:'',
+          field:"product_discount_label_at_time"
         },
         createdAt: {
           type: SequelizeDataTypes.DATE,

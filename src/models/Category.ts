@@ -1,6 +1,6 @@
-import { Model, DataTypes, Optional } from "sequelize";
+import { DataTypes, Optional, ModelDefined } from "sequelize";
 
-import { connection as sequelize } from "@database/index";
+import { connection } from "@database/index";
 import { User } from "@models/User";
 interface Categoryttributes {
   id: number;
@@ -16,25 +16,14 @@ interface Categoryttributes {
 interface CategoryCreationAttributes
   extends Optional<Categoryttributes, "id"> {}
 
-export class Category
-  extends Model<Categoryttributes, CategoryCreationAttributes>
-  implements Categoryttributes
-{
-  public id!: number;
-  public title!: string;
-  public description!: string;
-  public bannerPresentationDesktop!: string;
-  public bannerPresentationMobile!: string;
-  public isEnabled!: number;
-
-  public createdAt!: Date;
-  public updatedAt!: Date;
-}
-
-Category.init(
+export const Category: ModelDefined<
+  Categoryttributes,
+  CategoryCreationAttributes
+> = connection.define(
+  "Category",
   {
     id: {
-      type: DataTypes.INTEGER.UNSIGNED,
+      type: DataTypes.INTEGER,
       autoIncrement: true,
       primaryKey: true,
     },
@@ -74,7 +63,7 @@ Category.init(
     },
   },
   {
-    sequelize,
+    name: { singular: "Category", plural: "Categorys" },
     tableName: "Categorys",
     modelName: "Category",
     charset: "utf8mb4",
@@ -84,8 +73,11 @@ Category.init(
 );
 
 // Here we associate which actually populates out pre-declared `association` static and other methods.
-Category.belongsToMany(User, {
-  foreignKey: "Category_id",
-  through: "categorys_categorys",
-  as: "users",
-});
+(async () => {
+  await connection.sync({ force: false, alter: false });
+  Category.belongsToMany(User, {
+    foreignKey: "Category_id",
+    through: "categorys_categorys",
+    as: "Users",
+  });
+})();

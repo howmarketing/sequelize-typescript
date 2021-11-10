@@ -1,7 +1,7 @@
 "use strict";
-import { Model, DataTypes, Optional, Sequelize, BelongsTo } from "sequelize";
+import { DataTypes, Optional, Sequelize, ModelDefined } from "sequelize";
 
-import { connection as sequelize } from "@database/index";
+import { connection } from "@database/index";
 import { User } from "@models/User";
 
 // These are all the attributes in the SaleOrder model
@@ -19,24 +19,11 @@ interface SaleOrderAttributes {
 interface SaleOrderCreationAttributes
   extends Optional<SaleOrderAttributes, "id"> {}
 
-export class SaleOrder
-  extends Model<SaleOrderAttributes, SaleOrderCreationAttributes>
-  implements SaleOrderAttributes
-{
-  public id!: number; // Note that the `null assertion` `!` is required in strict mode.
-  public userId!: number;
-  public addressText!: string;
-  public paymentGetway!: string;
-  public paymentId!: string;
-
-  // timestamps!
-  public createdAt!: Date;
-  public updatedAt!: Date;
-
-  public getUser!: BelongsTo<User>;
-}
-
-SaleOrder.init(
+export const SaleOrder: ModelDefined<
+  SaleOrderAttributes,
+  SaleOrderCreationAttributes
+> = connection.define(
+  "SaleOrder",
   {
     id: {
       type: DataTypes.INTEGER,
@@ -78,7 +65,7 @@ SaleOrder.init(
     },
   },
   {
-    sequelize,
+    name: { singular: "SaleOrder", plural: "SalesOrder" },
     modelName: "SaleOrder",
     tableName: "sales_order",
     underscored: true,
@@ -88,5 +75,8 @@ SaleOrder.init(
   }
 );
 
-// ASSOCIATION BETWEEN N/M TO TECHS AND SaleOrderS
-SaleOrder.belongsTo(User, { foreignKey: "user_id", as: "user" });
+(async () => {
+  await connection.sync({ force: false, alter: false });
+  // ASSOCIATION BETWEEN N/M TO TECHS AND SaleOrderS
+  SaleOrder.belongsTo(User, { foreignKey: "user_id", as: "User" });
+})();

@@ -1,7 +1,7 @@
 "use strict";
-import { Model, DataTypes, Optional, Sequelize, BelongsTo } from "sequelize";
+import { DataTypes, Optional, Sequelize, ModelDefined } from "sequelize";
 
-import { connection as sequelize } from "@database/index";
+import { connection } from "@database/index";
 import { User } from "@models/User";
 import { SaleOrder } from "@models/SaleOrder";
 
@@ -21,29 +21,11 @@ interface SaleOrderAditionalInfoAttributes {
 interface SaleOrderAditionalInfoCreationAttributes
   extends Optional<SaleOrderAditionalInfoAttributes, "id"> {}
 
-export class SaleOrderAditionalInfo
-  extends Model<
-    SaleOrderAditionalInfoAttributes,
-    SaleOrderAditionalInfoCreationAttributes
-  >
-  implements SaleOrderAditionalInfoAttributes
-{
-  public id!: number; // Note that the `null assertion` `!` is required in strict mode.
-  public userId!: number;
-  public saleOrderId!: number;
-  public infoKey!: string;
-  public infoSubject!: string;
-  public infoMessage!: string;
-
-  // timestamps!
-  public createdAt!: Date;
-  public updatedAt!: Date;
-
-  public getUser!: BelongsTo<User>;
-  public getSaleOrder!: BelongsTo<SaleOrder>;
-}
-
-SaleOrderAditionalInfo.init(
+export const SaleOrderAditionalInfo: ModelDefined<
+  SaleOrderAditionalInfoAttributes,
+  SaleOrderAditionalInfoCreationAttributes
+> = connection.define(
+  "SaleOrderAditionalInfo",
   {
     id: {
       type: DataTypes.INTEGER,
@@ -93,7 +75,10 @@ SaleOrderAditionalInfo.init(
     },
   },
   {
-    sequelize,
+    name: {
+      singular: "SaleOrderAditionalInfo",
+      plural: "SalesOrderAditionalInfos",
+    },
     modelName: "SaleOrderAditionalInfo",
     tableName: "sales_order_aditional_infos",
     underscored: true,
@@ -102,12 +87,14 @@ SaleOrderAditionalInfo.init(
     collate: "utf8mb4_unicode_ci",
   }
 );
-
-SaleOrderAditionalInfo.belongsTo(User, {
-  foreignKey: "user_id",
-  as: "users",
-});
-SaleOrderAditionalInfo.belongsTo(SaleOrder, {
-  foreignKey: "sale_order_id",
-  as: "sales_order",
-});
+(async () => {
+  await connection.sync({ force: false, alter: false });
+  SaleOrderAditionalInfo.belongsTo(User, {
+    foreignKey: "user_id",
+    as: "Users",
+  });
+  SaleOrderAditionalInfo.belongsTo(SaleOrder, {
+    foreignKey: "sale_order_id",
+    as: "sales_order",
+  });
+})();

@@ -1,12 +1,6 @@
-import Sequelize, {
-  Model,
-  DataTypes,
-  Optional,
-  BelongsToGetAssociationMixin,
-  BelongsToCreateAssociationMixin,
-} from "sequelize";
+import Sequelize, { ModelDefined, DataTypes, Optional } from "sequelize";
 
-import { connection as sequelize } from "@database/index";
+import { connection, connection as sequelize } from "@database/index";
 import { User } from "@models/User";
 interface UserPhoneNumbersAttributes {
   id: number;
@@ -22,25 +16,11 @@ interface UserPhoneNumbersAttributes {
 interface UserPhoneNumbersCreationAttributes
   extends Optional<UserPhoneNumbersAttributes, "id"> {}
 
-export class UserPhoneNumbers
-  extends Model<UserPhoneNumbersAttributes, UserPhoneNumbersCreationAttributes>
-  implements UserPhoneNumbersAttributes
-{
-  public id!: number;
-  public userId!: number;
-  public phoneCountryCode!: number;
-  public phoneStateAreaCode!: number;
-  public phoneNumber!: number;
-  public phoneFormatedNumber!: string;
-
-  public createdAt!: Date;
-  public updatedAt!: Date;
-
-  public getUser!: BelongsToGetAssociationMixin<User>;
-  public addUserAssociate!: BelongsToCreateAssociationMixin<User>;
-}
-
-UserPhoneNumbers.init(
+export const UserPhoneNumbers: ModelDefined<
+  UserPhoneNumbersAttributes,
+  UserPhoneNumbersCreationAttributes
+> = sequelize.define(
+  "UserPhoneNumbers",
   {
     id: {
       type: DataTypes.INTEGER,
@@ -91,7 +71,7 @@ UserPhoneNumbers.init(
     },
   },
   {
-    sequelize,
+    name: { singular: "UserPhoneNumbers", plural: "UsersPhoneNumbers" },
     modelName: "UserPhoneNumbers",
     tableName: "users_phone_numbers",
     underscored: true,
@@ -101,5 +81,8 @@ UserPhoneNumbers.init(
   }
 );
 
-// Here we associate which actually populates out pre-declared `association` static and other methods.
-UserPhoneNumbers.belongsTo(User, { foreignKey: "user_id", as: "user" });
+(async () => {
+  await connection.sync({ force: false, alter: false });
+  // Here we associate which actually populates out pre-declared `association` static and other methods.
+  UserPhoneNumbers.belongsTo(User, { foreignKey: "user_id", as: "User" });
+})();

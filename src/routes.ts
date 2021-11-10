@@ -1,19 +1,19 @@
 import express, { Request, Response } from "express";
-import { UserController as UserControllerClass } from "@controllers/UserController";
-
+import TesteController from "@controllers/UserController";
 const routes = express.Router();
 
 routes.get("/", (req: Request, res: Response) => {
   return res.status(200).jsonp({ msg: "Hello" });
 });
 
+
 routes.post("/teste", async (req: Request, res: Response) => {
   try {
-    const UserController = new UserControllerClass();
+    // const UserController = new UserControllerClass();
     return executeAsyncAPIEndpointRouteCatchingErrorsAndInfinityLoope(
       req,
       res,
-      UserController.store
+      TesteController.store
     );
   } catch (e: any) {
     return res.jsonp({
@@ -23,86 +23,86 @@ routes.post("/teste", async (req: Request, res: Response) => {
   }
 });
 
-// Retrive user list with they associated models (techs and users_phone_numbers).
-routes.get("/api/users/list", async (req: Request, res: Response) => {
-  try {
-    const UserController = new UserControllerClass();
-    return await executeAsyncAPIEndpointRouteCatchingErrorsAndInfinityLoope(
-      req,
-      res,
-      UserController.getUsers
-    );
-  } catch (e) {
-    console.log(`Route ${req?.path || "/api/unknow"} Error:`, e);
-    return res.status(500).jsonp({ success: false, msg: e.message });
-  }
-});
+// // Retrive user list with they associated models (techs and users_phone_numbers).
+// routes.get("/api/users/list", async (req: Request, res: Response) => {
+//   try {
+//     const UserController = new UserControllerClass();
+//     return await executeAsyncAPIEndpointRouteCatchingErrorsAndInfinityLoope(
+//       req,
+//       res,
+//       UserController.getUsers
+//     );
+//   } catch (e) {
+//     console.log(`Route ${req?.path || "/api/unknow"} Error:`, e);
+//     return res.status(500).jsonp({ success: false, msg: e.message });
+//   }
+// });
 
-// Create an user
-routes.post("/api/user/create", async (req: Request, res: Response) => {
-  try {
-    const UserController = new UserControllerClass();
-    return await executeAsyncAPIEndpointRouteCatchingErrorsAndInfinityLoope(
-      req,
-      res,
-      UserController.store
-    );
-  } catch (e) {
-    console.log(`Route ${req?.path || "/api/unknow"} Error:`, e);
-    return res.status(500).jsonp({ success: false, msg: e.message });
-  }
-});
+// // Create an user
+// routes.post("/api/user/create", async (req: Request, res: Response) => {
+//   try {
+//     const UserController = new UserControllerClass();
+//     return await executeAsyncAPIEndpointRouteCatchingErrorsAndInfinityLoope(
+//       req,
+//       res,
+//       UserController.store
+//     );
+//   } catch (e) {
+//     console.log(`Route ${req?.path || "/api/unknow"} Error:`, e);
+//     return res.status(500).jsonp({ success: false, msg: e.message });
+//   }
+// });
 
-// Add some existent tech from techs table to user by user_id param
-routes.post(
-  "/api/user/:user_id/add/tech",
-  async (req: Request, res: Response) => {
-    try {
-      const UserController = new UserControllerClass();
-      return await executeAsyncAPIEndpointRouteCatchingErrorsAndInfinityLoope(
-        req,
-        res,
-        UserController.addTech
-      );
-    } catch (e) {
-      console.log(`Route ${req?.path || "/api/unknow"} Error:`, e);
-      return res.status(500).jsonp({ success: false, msg: e.message });
-    }
-  }
-);
+// // Add some existent tech from techs table to user by user_id param
+// routes.post(
+//   "/api/user/:user_id/add/tech",
+//   async (req: Request, res: Response) => {
+//     try {
+//       const UserController = new UserControllerClass();
+//       return await executeAsyncAPIEndpointRouteCatchingErrorsAndInfinityLoope(
+//         req,
+//         res,
+//         UserController.addTech
+//       );
+//     } catch (e) {
+//       console.log(`Route ${req?.path || "/api/unknow"} Error:`, e);
+//       return res.status(500).jsonp({ success: false, msg: e.message });
+//     }
+//   }
+// );
 
-// Retrive all users and yours associated techs, and could filter associated techs by query tech_name key-name with a keyword valu as tech name
-routes.get("/api/users/techs/list", async (req: Request, res: Response) => {
-  try {
-    const UserController = new UserControllerClass();
-    return await executeAsyncAPIEndpointRouteCatchingErrorsAndInfinityLoope(
-      req,
-      res,
-      UserController.getTechs
-    );
-  } catch (e) {
-    console.log(`Route ${req?.path || "/api/unknow"} Error:`, e);
-    return res.status(500).jsonp({ success: false, msg: e.message });
-  }
-});
+// // Retrive all users and yours associated techs, and could filter associated techs by query tech_name key-name with a keyword valu as tech name
+// routes.get("/api/users/techs/list", async (req: Request, res: Response) => {
+//   try {
+//     const UserController = new UserControllerClass();
+//     return await executeAsyncAPIEndpointRouteCatchingErrorsAndInfinityLoope(
+//       req,
+//       res,
+//       UserController.getTechs
+//     );
+//   } catch (e) {
+//     console.log(`Route ${req?.path || "/api/unknow"} Error:`, e);
+//     return res.status(500).jsonp({ success: false, msg: e.message });
+//   }
+// });
 
-// Retrive all associated techs from user by user_id param, and could filter associated techs by query tech_name key-name with a keyword valu as tech name
-routes.get(
-  "/api/user/:user_id/techs/list",
-  async (req: Request, res: Response) => {
-    try {
-      const UserController = new UserControllerClass();
-      return await executeAsyncAPIEndpointRouteCatchingErrorsAndInfinityLoope(
-        req,
-        res,
-        UserController.getTechs
-      );
-    } catch (e) {
-      console.log(`Route ${req?.path || "/api/unknow"} Error:`, e);
-      return res.status(500).jsonp({ success: false, msg: e.message });
-    }
-  }
-);
+// // Retrive all associated techs from user by user_id param, and could filter associated techs by query tech_name key-name with a keyword valu as tech name
+// routes.get(
+//   "/api/user/:user_id/techs/list",
+//   async (req: Request, res: Response) => {
+//     try {
+//       const UserController = new UserControllerClass();
+//       return await executeAsyncAPIEndpointRouteCatchingErrorsAndInfinityLoope(
+//         req,
+//         res,
+//         UserController.getTechs
+//       );
+//     } catch (e) {
+//       console.log(`Route ${req?.path || "/api/unknow"} Error:`, e);
+//       return res.status(500).jsonp({ success: false, msg: e.message });
+//     }
+//   }
+// );
 
 /**
  * @description Função responsável por executar uma rota API com os padrões de segurança e comunicação diante erros

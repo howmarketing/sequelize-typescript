@@ -1,14 +1,7 @@
 "use strict";
-import {
-  Model,
-  DataTypes,
-  Optional,
-  Sequelize,
-  BelongsTo,
-  HasOne,
-} from "sequelize";
+import { DataTypes, Optional, Sequelize, ModelDefined } from "sequelize";
 
-import { connection as sequelize } from "@database/index";
+import { connection } from "@database/index";
 import { User } from "@models/User";
 import { SaleOrder } from "@models/SaleOrder";
 import { Product } from "@models/Product";
@@ -27,25 +20,11 @@ interface SaleOrderItemAttributes {
 interface SaleOrderItemCreationAttributes
   extends Optional<SaleOrderItemAttributes, "id"> {}
 
-export class SaleOrderItem
-  extends Model<SaleOrderItemAttributes, SaleOrderItemCreationAttributes>
-  implements SaleOrderItemAttributes
-{
-  public id!: number; // Note that the `null assertion` `!` is required in strict mode.
-  public userId!: number;
-  public saleOrderId!: number;
-  public productId!: number;
-
-  // timestamps!
-  public createdAt!: Date;
-  public updatedAt!: Date;
-
-  public getSaleOrder!: BelongsTo<SaleOrder>;
-  public getUser!: BelongsTo<User>;
-  public getProduct!: HasOne<Product>;
-}
-
-SaleOrderItem.init(
+export const SaleOrderItem: ModelDefined<
+  SaleOrderItemAttributes,
+  SaleOrderItemCreationAttributes
+> = connection.define(
+  "SaleOrderItem",
   {
     id: {
       type: DataTypes.INTEGER,
@@ -88,7 +67,7 @@ SaleOrderItem.init(
     },
   },
   {
-    sequelize,
+    name: { singular: "SaleOrderItem", plural: "SalesOrderItems" },
     modelName: "SaleOrderItem",
     tableName: "sales_order_items",
     underscored: true,
@@ -98,12 +77,15 @@ SaleOrderItem.init(
   }
 );
 
-SaleOrderItem.belongsTo(User, {
-  foreignKey: "user_id",
-  as: "users",
-});
-SaleOrderItem.belongsTo(SaleOrder, {
-  foreignKey: "sales_order_id",
-  as: "sales_order",
-});
-SaleOrderItem.hasOne(Product, { foreignKey: "product_id", as: "product" });
+(async () => {
+  await connection.sync({ force: false, alter: false });
+  SaleOrderItem.belongsTo(User, {
+    foreignKey: "user_id",
+    as: "users",
+  });
+  SaleOrderItem.belongsTo(SaleOrder, {
+    foreignKey: "sales_order_id",
+    as: "sales_order",
+  });
+  SaleOrderItem.hasOne(Product, { foreignKey: "product_id", as: "product" });
+})();

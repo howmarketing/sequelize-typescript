@@ -1,5 +1,6 @@
 "use strict";
 const { Sequelize } = require("sequelize");
+
 module.exports = {
   /**
    *
@@ -7,20 +8,45 @@ module.exports = {
    * @param {import('sequelize').DataTypes} SequelizeDataTypes
    */
   up: async (queryInterface, SequelizeDataTypes) => {
-    /**
-     * Add altering commands here.
-     *
-     * Example:
-     * await queryInterface.createTable('users', { id: Sequelize.INTEGER });
-     */
-    await queryInterface.createTable(
-      "teste_table",
+    return await queryInterface.createTable(
+      "sales_order_aditional_infos",
       {
         id: {
           type: SequelizeDataTypes.INTEGER,
           primaryKey: true,
           autoIncrement: true,
           allowNull: false,
+        },
+        userId: {
+          type: SequelizeDataTypes.INTEGER({ length: 11 }),
+          allowNull: false,
+          references: { model: "users", key: "id" },
+          onUpdate: "NO ACTION",
+          onDelete: "NO ACTION",
+          field: "user_id",
+        },
+        saleOrderId: {
+          type: SequelizeDataTypes.INTEGER({ length: 11 }),
+          allowNull: false,
+          references: { model: "sales_order", key: "id" },
+          onUpdate: "NO ACTION",
+          onDelete: "NO ACTION",
+          field: "sale_order_id",
+        },
+        infoKey: {
+          type: SequelizeDataTypes.STRING,
+          allowNull: false,
+          field: "info_key",
+        },
+        infoSubject: {
+          type: SequelizeDataTypes.STRING,
+          allowNull: false,
+          field: "info_subject",
+        },
+        infoMessage: {
+          type: SequelizeDataTypes.STRING,
+          allowNull: false,
+          field: "info_message",
         },
         createdAt: {
           type: SequelizeDataTypes.DATE,
@@ -37,8 +63,7 @@ module.exports = {
         },
       },
       {
-        modelName: "teste_table",
-        underscored: true,
+        moduleName: "sales_order_aditional_infos",
         charset: "utf8mb4",
         engine: "InnoDB",
         collate: "utf8mb4_unicode_ci",
@@ -52,12 +77,6 @@ module.exports = {
    * @param {import('sequelize').DataTypes} SequelizeDataTypes
    */
   down: async (queryInterface, SequelizeDataTypes) => {
-    /**
-     * Add reverting commands here.
-     *
-     * Example:
-     * await queryInterface.dropTable('users');
-     */
-    await queryInterface.dropTable("teste_table");
+    return await queryInterface.dropTable("sales_order_aditional_infos");
   },
 };

@@ -1,5 +1,6 @@
 "use strict";
 const { Sequelize } = require("sequelize");
+
 module.exports = {
   /**
    *
@@ -8,7 +9,7 @@ module.exports = {
    */
   up: async (queryInterface, SequelizeDataTypes) => {
     return await queryInterface.createTable(
-      "address",
+      "users_phone_numbers",
       {
         id: {
           type: SequelizeDataTypes.INTEGER,
@@ -17,56 +18,39 @@ module.exports = {
           allowNull: false,
         },
         userId: {
-          type: SequelizeDataTypes.INTEGER,
+          type: SequelizeDataTypes.INTEGER({ length: 11 }),
           allowNull: false,
           references: { model: "users", key: "id" },
           onUpdate: "CASCADE",
           onDelete: "CASCADE",
           field: "user_id",
         },
-        city: {
-          type: SequelizeDataTypes.STRING,
+        phoneCountryCode: {
+          type: SequelizeDataTypes.INTEGER({ length: 3 }),
           allowNull: false,
-          field: "city",
-          comment: "City name",
+          defaultValue: 55,
+          field: "phone_country_code",
+          comment: "Code to identify the phone number country prefix code.",
         },
-        state: {
-          type: SequelizeDataTypes.STRING,
+        phoneStateAreaCode: {
+          type: SequelizeDataTypes.INTEGER({ length: 3 }),
           allowNull: false,
-          field: "state",
-          comment: "State name",
+          defaultValue: "62",
+          field: "phone_state_area_code",
+          comment: "Code to identify the phone number state area prefix code.",
         },
-        addressDescription: {
-          type: SequelizeDataTypes.STRING(128),
+        phoneNumber: {
+          type: SequelizeDataTypes.INTEGER({ length: 3 }),
           allowNull: false,
-          field: "description",
-          comment: "Description of user address",
-          collate: "utf8mb4_unicode_ci",
+          defaultValue: 999999999,
+          field: "phone_number",
+          comment: "The phone number.",
         },
-        addressNumber: {
-          type: SequelizeDataTypes.STRING(8),
-          allowNull: true,
-          defaultValue: "S/N",
-          field: "number",
-          comment: "The number of user address.",
-        },
-        addressNeighborhood: {
-          type: SequelizeDataTypes.STRING({ length: 64 }),
+        phoneFormatedNumber: {
+          type: SequelizeDataTypes.STRING({ length: 23 }),
           allowNull: false,
-          field: "neighborhood",
-          comment: "The user address neighborhood info.",
-        },
-        addressPlusInfo: {
-          type: SequelizeDataTypes.STRING({ length: 128 }),
-          allowNull: true,
-          field: "plus_info",
-          comment: "The user address plus info.",
-        },
-        adressActived: {
-          type: SequelizeDataTypes.TINYINT,
-          allowNull: false,
-          defaultValue: 0,
-          field: "actived_address",
+          field: "phone_formated_number",
+          comment: "Phone formated with concated phone number infos",
         },
         createdAt: {
           type: SequelizeDataTypes.DATE,
@@ -83,7 +67,8 @@ module.exports = {
         },
       },
       {
-        moduleName: "address",
+        modelName: "users_phone_numbers",
+        underscored: true,
         charset: "utf8mb4",
         engine: "InnoDB",
         collate: "utf8mb4_unicode_ci",
@@ -97,6 +82,6 @@ module.exports = {
    * @param {import('sequelize').DataTypes} SequelizeDataTypes
    */
   down: async (queryInterface, SequelizeDataTypes) => {
-    return await queryInterface.dropTable("address");
+    return await queryInterface.dropTable("users_phone_numbers");
   },
 };

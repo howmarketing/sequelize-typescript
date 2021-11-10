@@ -1,5 +1,6 @@
 "use strict";
 const { Sequelize } = require("sequelize");
+
 module.exports = {
   /**
    *
@@ -7,20 +8,25 @@ module.exports = {
    * @param {import('sequelize').DataTypes} SequelizeDataTypes
    */
   up: async (queryInterface, SequelizeDataTypes) => {
-    /**
-     * Add altering commands here.
-     *
-     * Example:
-     * await queryInterface.createTable('users', { id: Sequelize.INTEGER });
-     */
-    await queryInterface.createTable(
-      "teste_table",
+    return await queryInterface.createTable(
+      "trash_tables_records",
       {
         id: {
-          type: SequelizeDataTypes.INTEGER,
+          type: SequelizeDataTypes.INTEGER({ length: 11 }).UNSIGNED,
           primaryKey: true,
           autoIncrement: true,
           allowNull: false,
+        },
+        tableName: {
+          type: SequelizeDataTypes.STRING({ length: 255 }),
+          allowNull: false,
+          field: "table_name",
+          comment: "Refer to a database table name that has the trash status",
+        },
+        tableRecordId: {
+          type: SequelizeDataTypes.INTEGER({ length: 11 }).UNSIGNED,
+          allowNull: false,
+          field: "table_record_id",
         },
         createdAt: {
           type: SequelizeDataTypes.DATE,
@@ -37,11 +43,10 @@ module.exports = {
         },
       },
       {
-        modelName: "teste_table",
-        underscored: true,
-        charset: "utf8mb4",
         engine: "InnoDB",
+        charset: "utf8mb4",
         collate: "utf8mb4_unicode_ci",
+        moduleName: "trash_tables_records",
       }
     );
   },
@@ -51,13 +56,7 @@ module.exports = {
    * @param {import('sequelize').QueryInterface} queryInterface
    * @param {import('sequelize').DataTypes} SequelizeDataTypes
    */
-  down: async (queryInterface, SequelizeDataTypes) => {
-    /**
-     * Add reverting commands here.
-     *
-     * Example:
-     * await queryInterface.dropTable('users');
-     */
-    await queryInterface.dropTable("teste_table");
+  down: async (queryInterface, Sequelize) => {
+    return await queryInterface.dropTable("trash_tables_records");
   },
 };

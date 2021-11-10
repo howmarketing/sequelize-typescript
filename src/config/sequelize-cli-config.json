@@ -2,22 +2,49 @@
   "development": {
     "username": "root",
     "password": null,
-    "database": "docker_sequelize_typescript_sample",
+    "database": "sequelize_typescript",
     "host": "localhost",
-    "dialect": "mysql"
+    "dialect": "mysql",
+    "port": 3306,
+    "define": {
+      "timestamps": true,
+      "underscored": true,
+      "charset": "utf8mb4",
+      "collate": "utf8mb4_unicode_ci",
+      "createdAt": "created_at",
+      "updatedAt": "updated_at"
+  }
   },
   "test": {
     "username": "root",
     "password": null,
-    "database": "docker_sequelize_typescript_sample",
+    "database": "sequelize_typescript",
     "host": "localhost",
-    "dialect": "mysql"
+    "dialect": "mysql",
+    "port": 3306,
+    "define": {
+      "timestamps": true,
+      "underscored": true,
+      "charset": "utf8mb4",
+      "collate": "utf8mb4_unicode_ci",
+      "createdAt": "created_at",
+      "updatedAt": "updated_at"
+  }
   },
   "production": {
     "username": "root",
     "password": null,
-    "database": "docker_sequelize_typescript_sample",
+    "database": "sequelize_typescript",
     "host": "localhost",
-    "dialect": "mysql"
+    "dialect": "mysql",
+    "port": 3306,
+    "define": {
+      "timestamps": true,
+      "underscored": true,
+      "charset": "utf8mb4",
+      "collate": "utf8mb4_unicode_ci",
+      "createdAt": "created_at",
+      "updatedAt": "updated_at"
+  }
   }
 }

@@ -1,5 +1,6 @@
 "use strict";
 const { Sequelize } = require("sequelize");
+
 module.exports = {
   /**
    *
@@ -7,20 +8,41 @@ module.exports = {
    * @param {import('sequelize').DataTypes} SequelizeDataTypes
    */
   up: async (queryInterface, SequelizeDataTypes) => {
-    /**
-     * Add altering commands here.
-     *
-     * Example:
-     * await queryInterface.createTable('users', { id: Sequelize.INTEGER });
-     */
-    await queryInterface.createTable(
-      "teste_table",
+    return await queryInterface.createTable(
+      "categorys",
       {
         id: {
           type: SequelizeDataTypes.INTEGER,
           primaryKey: true,
           autoIncrement: true,
           allowNull: false,
+        },
+        title: {
+          type: SequelizeDataTypes.STRING,
+          allowNull: false,
+          field: "title",
+        },
+        description: {
+          type: SequelizeDataTypes.TEXT,
+          allowNull: false,
+          field: "description",
+          collate: "utf8mb4_unicode_ci",
+        },
+        bannerPresentationDesktop: {
+          type: SequelizeDataTypes.TEXT,
+          allowNull: true,
+          field: "banner_presentation_desktop",
+        },
+        bannerPresentationMobile: {
+          type: SequelizeDataTypes.TEXT,
+          allowNull: true,
+          field: "banner_presentation_mobile",
+        },
+        isEnabled: {
+          type: SequelizeDataTypes.TINYINT,
+          allowNull: false,
+          defaultValue: 1,
+          field: "is_enabled",
         },
         createdAt: {
           type: SequelizeDataTypes.DATE,
@@ -37,8 +59,7 @@ module.exports = {
         },
       },
       {
-        modelName: "teste_table",
-        underscored: true,
+        moduleName: "categorys",
         charset: "utf8mb4",
         engine: "InnoDB",
         collate: "utf8mb4_unicode_ci",
@@ -52,12 +73,6 @@ module.exports = {
    * @param {import('sequelize').DataTypes} SequelizeDataTypes
    */
   down: async (queryInterface, SequelizeDataTypes) => {
-    /**
-     * Add reverting commands here.
-     *
-     * Example:
-     * await queryInterface.dropTable('users');
-     */
-    await queryInterface.dropTable("teste_table");
+    return await queryInterface.dropTable("categorys");
   },
 };

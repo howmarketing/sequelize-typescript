@@ -5,22 +5,27 @@ module.exports = {
    *
    * @param {import('sequelize').QueryInterface} queryInterface
    * @param {import('sequelize').DataTypes} SequelizeDataTypes
+   * @returns {Promise<void>}
    */
   up: async (queryInterface, SequelizeDataTypes) => {
-    /**
-     * Add altering commands here.
-     *
-     * Example:
-     * await queryInterface.createTable('users', { id: Sequelize.INTEGER });
-     */
-    await queryInterface.createTable(
-      "teste_table",
+    return await queryInterface.createTable(
+      "galery",
       {
         id: {
           type: SequelizeDataTypes.INTEGER,
           primaryKey: true,
-          autoIncrement: true,
           allowNull: false,
+          autoIncrement: true,
+        },
+        bannerPresentationDesktop: {
+          type: SequelizeDataTypes.TEXT,
+          allowNull: false,
+          field: "banner_presentation_desktop",
+        },
+        bannerPresentationMobile: {
+          type: SequelizeDataTypes.TEXT,
+          allowNull: false,
+          field: "banner_presentation_mobile",
         },
         createdAt: {
           type: SequelizeDataTypes.DATE,
@@ -37,7 +42,7 @@ module.exports = {
         },
       },
       {
-        modelName: "teste_table",
+        modelName: "galery",
         underscored: true,
         charset: "utf8mb4",
         engine: "InnoDB",
@@ -50,14 +55,9 @@ module.exports = {
    *
    * @param {import('sequelize').QueryInterface} queryInterface
    * @param {import('sequelize').DataTypes} SequelizeDataTypes
+   * @returns {Promise<void>}
    */
   down: async (queryInterface, SequelizeDataTypes) => {
-    /**
-     * Add reverting commands here.
-     *
-     * Example:
-     * await queryInterface.dropTable('users');
-     */
-    await queryInterface.dropTable("teste_table");
+    return await queryInterface.dropTable("galery");
   },
 };

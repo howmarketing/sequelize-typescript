@@ -1,5 +1,6 @@
 "use strict";
 const { Sequelize } = require("sequelize");
+
 module.exports = {
   /**
    *
@@ -7,20 +8,24 @@ module.exports = {
    * @param {import('sequelize').DataTypes} SequelizeDataTypes
    */
   up: async (queryInterface, SequelizeDataTypes) => {
-    /**
-     * Add altering commands here.
-     *
-     * Example:
-     * await queryInterface.createTable('users', { id: Sequelize.INTEGER });
-     */
-    await queryInterface.createTable(
-      "teste_table",
+    return await queryInterface.createTable(
+      "users",
       {
         id: {
           type: SequelizeDataTypes.INTEGER,
           primaryKey: true,
           autoIncrement: true,
           allowNull: false,
+        },
+        firstName: {
+          type: SequelizeDataTypes.STRING,
+          allowNull: false,
+          field: "first_name",
+        },
+        lastName: {
+          type: SequelizeDataTypes.STRING,
+          allowNull: false,
+          field: "last_name",
         },
         createdAt: {
           type: SequelizeDataTypes.DATE,
@@ -37,7 +42,7 @@ module.exports = {
         },
       },
       {
-        modelName: "teste_table",
+        modelName: "users",
         underscored: true,
         charset: "utf8mb4",
         engine: "InnoDB",
@@ -52,12 +57,6 @@ module.exports = {
    * @param {import('sequelize').DataTypes} SequelizeDataTypes
    */
   down: async (queryInterface, SequelizeDataTypes) => {
-    /**
-     * Add reverting commands here.
-     *
-     * Example:
-     * await queryInterface.dropTable('users');
-     */
-    await queryInterface.dropTable("teste_table");
+    return await queryInterface.dropTable("users");
   },
 };

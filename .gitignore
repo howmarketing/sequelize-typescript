@@ -26,7 +26,7 @@ coverage
 .nyc_output
 
 # Grunt intermediate storage (https://gruntjs.com/creating-plugins#storing-task-files)
-.grunt
+# .grunt
 
 # Bower dependency directory (https://bower.io/)
 bower_components
@@ -42,16 +42,16 @@ node_modules/
 jspm_packages/
 
 # TypeScript v1 declaration files
-typings/
+# typings/
 
 # TypeScript cache
-*.tsbuildinfo
+* .tsbuildinfo
 
 # Optional npm cache directory
-.npm
+# .npm
 
 # Optional eslint cache
-.eslintcache
+ .eslintcache
 
 # Microbundle cache
 .rpt2_cache/
@@ -69,8 +69,8 @@ typings/
 .yarn-integrity
 
 # dotenv environment variables file
-.env
-.env.test
+# .env
+# .env.test
 
 # parcel-bundler cache (https://parceljs.org/)
 .cache
@@ -92,7 +92,7 @@ dist
 .vuepress/dist
 
 # Serverless directories
-.serverless/
+# .serverless/
 
 # FuseBox cache
 .fusebox/

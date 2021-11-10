@@ -5,22 +5,33 @@ module.exports = {
    *
    * @param {import('sequelize').QueryInterface} queryInterface
    * @param {import('sequelize').DataTypes} SequelizeDataTypes
+   * @returns {Promise<void>}
    */
   up: async (queryInterface, SequelizeDataTypes) => {
-    /**
-     * Add altering commands here.
-     *
-     * Example:
-     * await queryInterface.createTable('users', { id: Sequelize.INTEGER });
-     */
-    await queryInterface.createTable(
-      "teste_table",
+    return await queryInterface.createTable(
+      "product_galery_items",
       {
         id: {
           type: SequelizeDataTypes.INTEGER,
           primaryKey: true,
-          autoIncrement: true,
           allowNull: false,
+          autoIncrement: true,
+        },
+        productId: {
+          type: SequelizeDataTypes.INTEGER,
+          allowNull: false,
+          references: { model: "products", key: "id" },
+          field: "product_id",
+          onUpdate: "CASCADE",
+          onDelete: "CASCADE",
+        },
+        galeryId: {
+          type: SequelizeDataTypes.INTEGER,
+          allowNull: false,
+          references: { model: "galery", key: "id" },
+          field: "galery_id",
+          onUpdate: "CASCADE",
+          onDelete: "CASCADE",
         },
         createdAt: {
           type: SequelizeDataTypes.DATE,
@@ -37,7 +48,7 @@ module.exports = {
         },
       },
       {
-        modelName: "teste_table",
+        modelName: "product_galery_items",
         underscored: true,
         charset: "utf8mb4",
         engine: "InnoDB",
@@ -50,14 +61,9 @@ module.exports = {
    *
    * @param {import('sequelize').QueryInterface} queryInterface
    * @param {import('sequelize').DataTypes} SequelizeDataTypes
+   * @returns {Promise<void>}
    */
   down: async (queryInterface, SequelizeDataTypes) => {
-    /**
-     * Add reverting commands here.
-     *
-     * Example:
-     * await queryInterface.dropTable('users');
-     */
-    await queryInterface.dropTable("teste_table");
+    return await queryInterface.dropTable("product_galery_items");
   },
 };

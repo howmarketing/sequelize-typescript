@@ -1,26 +1,37 @@
 "use strict";
-const { Sequelize } = require("sequelize");
+const Sequelize = require("sequelize");
 module.exports = {
   /**
    *
    * @param {import('sequelize').QueryInterface} queryInterface
    * @param {import('sequelize').DataTypes} SequelizeDataTypes
+   * @returns {Promise<void>}
    */
   up: async (queryInterface, SequelizeDataTypes) => {
-    /**
-     * Add altering commands here.
-     *
-     * Example:
-     * await queryInterface.createTable('users', { id: Sequelize.INTEGER });
-     */
-    await queryInterface.createTable(
-      "teste_table",
+    return await queryInterface.createTable(
+      "products_categorys",
       {
         id: {
           type: SequelizeDataTypes.INTEGER,
           primaryKey: true,
-          autoIncrement: true,
           allowNull: false,
+          autoIncrement: true,
+        },
+        productId: {
+          type: SequelizeDataTypes.INTEGER,
+          references: { model: "products", key: "id" },
+          allowNull: false,
+          field: "product_id",
+          onUpdate: "CASCADE",
+          onDelete: "CASCADE",
+        },
+        categoryId: {
+          type: SequelizeDataTypes.INTEGER,
+          references: { model: "categorys", key: "id" },
+          allowNull: false,
+          field: "category_id",
+          onUpdate: "CASCADE",
+          onDelete: "CASCADE",
         },
         createdAt: {
           type: SequelizeDataTypes.DATE,
@@ -37,7 +48,7 @@ module.exports = {
         },
       },
       {
-        modelName: "teste_table",
+        modelName: "products_categorys",
         underscored: true,
         charset: "utf8mb4",
         engine: "InnoDB",
@@ -50,14 +61,9 @@ module.exports = {
    *
    * @param {import('sequelize').QueryInterface} queryInterface
    * @param {import('sequelize').DataTypes} SequelizeDataTypes
+   * @returns {Promise<void>}
    */
   down: async (queryInterface, SequelizeDataTypes) => {
-    /**
-     * Add reverting commands here.
-     *
-     * Example:
-     * await queryInterface.dropTable('users');
-     */
-    await queryInterface.dropTable("teste_table");
+    return await queryInterface.dropTable("products_categorys");
   },
 };
